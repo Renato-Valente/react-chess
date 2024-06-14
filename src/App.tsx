@@ -57,6 +57,7 @@ function App() {
         if(value.empty != result[index].empty) {hasChanged = true}
       })
 
+      //to avoid re-render
       return hasChanged ? result : prev;
     })
 
