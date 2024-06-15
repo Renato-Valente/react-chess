@@ -3,7 +3,11 @@ interface boxType {
     title: string
 }
 
-const Blue = (props: boxType) => {
+interface testType {
+    title: string
+}
+
+const Blue = (props: testType) => {
     return(
         <div style={{width: '50px', height:'50px', backgroundColor: 'blue'}}>
             {props.title}

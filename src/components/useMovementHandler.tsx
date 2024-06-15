@@ -1,5 +1,5 @@
 interface prospType {
-    setPawns: (e: React.SetStateAction<{x: number, y: number}[]>) => any;
+    setPawns: (e: React.SetStateAction<{x: number, y: number, piece: 'Pawn' | 'King'}[]>) => any;
     pawnIndex: number;
     xOffset: number | undefined;
     yOffset: number | undefined;
@@ -27,7 +27,7 @@ const useMovementHandler = (props: prospType) => {
 
         setPawns((prev) => {
             let result = [...prev];
-            result[pawnIndex] = {x: column.current, y: row.current};
+            result[pawnIndex] = {x: column.current, y: row.current, piece: result[pawnIndex].piece};
             return result;
         })
     }

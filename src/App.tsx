@@ -2,6 +2,7 @@ import {useEffect, useRef, useState } from 'react'
 import './App.css'
 import Pawn from './components/Pawn';
 import Teste from './components/Teste';
+import King from './components/King';
 
 function App() {
 
@@ -19,9 +20,9 @@ function App() {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const [pawns, setPawns] = useState([
-    {x: 0, y: 6},
-    {x: 7, y: 6}
+  const [pawns, setPawns] = useState<{x: number, y: number, piece: 'Pawn' | 'King'}[]>([
+    {x: 0, y: 6, piece: 'Pawn'},
+    {x: 7, y: 6, piece: 'King'}
   ])
 
   const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight});
@@ -63,6 +64,20 @@ function App() {
 
   })
 
+  interface PieceProps {
+    pawns: {x: number, y: number}[],
+    setPawns: (value: React.SetStateAction<{x: number, y: number, piece: 'Pawn' | 'King'}[]>) => any;
+    pawnIndex: number,
+    xOffset: number | undefined;
+    yOffset: number | undefined;
+    containerSize: {width: number, height: number},
+}
+
+  const piecesMap : {[Key in 'Pawn' | 'King']: React.ComponentType<PieceProps>} = {
+    'Pawn': Pawn,
+    'King': King
+  }
+
   return (
     <>
       <div style={{
@@ -83,7 +98,8 @@ function App() {
             }} className="box">
 
               {pawns.map((_pawn, _index) => {
-                return (_pawn.x + _pawn.y * 8 == index ? <Pawn pawns={pawns} key={_index} xOffset={xOffset}
+                const Component = piecesMap[_pawn.piece];
+                return (_pawn.x + _pawn.y * 8 == index ? <Component pawns={pawns} key={_index} xOffset={xOffset}
                    yOffset={yOffset} setPawns={setPawns} pawnIndex={_index} containerSize={containerSize} /> : '')
               })}
             </div>

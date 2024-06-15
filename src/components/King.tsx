@@ -1,9 +1,10 @@
+
 import { useRef } from "react";
 import useMovementHandler from "./useMovementHandler";
 
 interface PieceProps {
     pawns: {x: number, y: number}[],
-    setPawns: (value: React.SetStateAction<{x: number, y: number, piece: 'Pawn' | 'King'}[]>) => any;
+    setPawns: (value: React.SetStateAction<{x: number, y: number, piece:'Pawn' | 'King'}[]>) => any;
     pawnIndex: number,
     xOffset: number | undefined;
     yOffset: number | undefined;
@@ -11,7 +12,7 @@ interface PieceProps {
 }
 
 
-const Pawn = (props: PieceProps) => {
+const King = (props: PieceProps) => {
 
 
     const {setPawns,xOffset, yOffset, pawnIndex, containerSize, pawns} = props;
@@ -29,10 +30,10 @@ const Pawn = (props: PieceProps) => {
 
     console.log('pawn render ', window.innerWidth);
     return(
-        <div style={{width: size.width, height: size.height}} 
+        <div style={{width: size.width, height: size.height, backgroundColor: 'limegreen'}} 
          onTouchMove={touchMove} onTouchEnd={touchEnd} className="pawn"></div>
     )
 
 }
 
-export default Pawn;
+export default King;
