@@ -1,22 +1,16 @@
 import {useEffect, useRef, useState } from 'react'
 import './App.css'
 import Pawn from './components/Pawn';
-import Teste from './components/Teste';
 import King from './components/King';
 
 function App() {
 
-  const [board, setBoard] = useState(
-    [
-    {empty:true},{empty:true},{empty:false},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},
-    {empty:true},{empty:true},{empty:false},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},
-    {empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},
-    {empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},
-    {empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},
-    {empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},
-    {empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},
-    {empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true},{empty:true}
-  ])
+  const initialBoard: {empty: boolean, playable: Boolean}[] = [];
+  for(let i = 0; i < 64; i++){
+    initialBoard.push({empty: true, playable: false})
+  }
+
+  const [board, setBoard] = useState([...initialBoard]);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -41,11 +35,10 @@ function App() {
   }, [])
 
   useEffect(() => {
-    console.log('App render ', pawns);
 
     setBoard((prev) => {
       
-      let result = prev.map(value => ({...value, empty:true}))
+      let result = prev.map(value => ({...value, empty:true, playable: value.playable}))
 
       pawns.forEach((value) => {
         const boardIndex = value.x + value.y * 8;
@@ -67,16 +60,20 @@ function App() {
   interface PieceProps {
     pawns: {x: number, y: number}[],
     setPawns: (value: React.SetStateAction<{x: number, y: number, piece: 'Pawn' | 'King'}[]>) => any;
+    setBoard: (e: React.SetStateAction<{empty: boolean, playable: Boolean}[]>) => any;
     pawnIndex: number,
     xOffset: number | undefined;
     yOffset: number | undefined;
-    containerSize: {width: number, height: number},
+    containerSize: {width: number, height: number};
+    size: {width: number, height: number};
 }
 
   const piecesMap : {[Key in 'Pawn' | 'King']: React.ComponentType<PieceProps>} = {
     'Pawn': Pawn,
     'King': King
   }
+
+  const size = window.innerWidth > 600 ? {width: 50, height: 50} : {width: 40, height: 40};
 
   return (
     <>
@@ -87,7 +84,8 @@ function App() {
         {board.map((item, index) => {
           const row = Math.floor(index / 8);
           const column = index % 8;
-          const color = (column + row)  % 2 == 0 ? 'white' : 'yellowgreen';
+          let color = (column + row)  % 2 == 0 ? 'white' : 'yellowgreen';
+          color = item.playable ? 'limegreen' : color;
           const xOffset = containerSize.width ? (screenSize.width / 2) - (containerSize.width / 2) : undefined;
           const yOffset = containerSize.height ? (screenSize.height / 2) - (containerSize.height / 2) : undefined;
           return(
@@ -99,8 +97,8 @@ function App() {
 
               {pawns.map((_pawn, _index) => {
                 const Component = piecesMap[_pawn.piece];
-                return (_pawn.x + _pawn.y * 8 == index ? <Component pawns={pawns} key={_index} xOffset={xOffset}
-                   yOffset={yOffset} setPawns={setPawns} pawnIndex={_index} containerSize={containerSize} /> : '')
+                return (_pawn.x + _pawn.y * 8 == index ? <Component size={size} pawns={pawns} key={_index} xOffset={xOffset}
+                   yOffset={yOffset} setPawns={setPawns} setBoard={setBoard} pawnIndex={_index} containerSize={containerSize} /> : '')
               })}
             </div>
           )

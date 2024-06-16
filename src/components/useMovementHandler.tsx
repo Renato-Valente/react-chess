@@ -1,5 +1,8 @@
+import { useRef } from "react";
+
 interface prospType {
     setPawns: (e: React.SetStateAction<{x: number, y: number, piece: 'Pawn' | 'King'}[]>) => any;
+    setBoard: (e: React.SetStateAction<{empty: boolean, playable: Boolean}[]>) => any;
     pawnIndex: number;
     xOffset: number | undefined;
     yOffset: number | undefined;
@@ -9,14 +12,34 @@ interface prospType {
     row: React.MutableRefObject<number>;
     pageX: React.MutableRefObject<number>;
     pageY: React.MutableRefObject<number>;
+    plays: number[];
 }
 
 const useMovementHandler = (props: prospType) => {
 
-    const {setPawns, pawnIndex, xOffset, yOffset, containerSize, size, column, row, pageX, pageY} = props;
+    const {setPawns, setBoard, plays, pawnIndex, xOffset, yOffset, containerSize, size, column, row, pageX, pageY} = props;
     const boxSize = {width: containerSize.width / 8, height: containerSize.height / 8}
+    const startPosition = useRef({column: 0, row: 0});
 
     const touchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+
+        setBoard((prev) => {
+            let result = [...prev];
+            
+            if(!prev[column.current + row.current * 8].playable) {
+                console.log('not possible!');
+                console.log(' ');
+                row.current = startPosition.current.row;
+                column.current = startPosition.current.column;
+            }
+
+            plays.forEach((item) => {
+                result[item].playable = false;
+            })
+
+            return result;
+        })
+        console.log('touchend Teste')
         e.currentTarget.style.position = 'absolute';
         const container_x = column.current * boxSize.width + boxSize.width / 2;
         const container_y = row.current * boxSize.height + boxSize.height / 2;
@@ -28,6 +51,19 @@ const useMovementHandler = (props: prospType) => {
         setPawns((prev) => {
             let result = [...prev];
             result[pawnIndex] = {x: column.current, y: row.current, piece: result[pawnIndex].piece};
+            return result;
+        })
+    }
+
+    const touchStart = () => {
+        startPosition.current = {column: column.current, row: row.current}; 
+        console.log(`touchStart: ${startPosition.current.row} ${startPosition.current.column}`);
+        setBoard((prev) => {
+            let result = [...prev];
+            plays.forEach((item) => {
+                result[item].playable = true;
+            })
+
             return result;
         })
     }
@@ -46,7 +82,7 @@ const useMovementHandler = (props: prospType) => {
         
         const containerX = pageX.current - xOffset;
         const containerY = pageY.current - yOffset;
-        //console.log('moving: ', containerX);
+
         column.current = (Math.floor(containerX / boxSize.width));
         row.current = (Math.floor(containerY / boxSize.height));
         
@@ -54,7 +90,7 @@ const useMovementHandler = (props: prospType) => {
         e.currentTarget.style.top = `${pageY.current}px`;
     }
 
-    return {touchMove ,touchEnd}
+    return {touchMove ,touchEnd, touchStart}
 
 }
 
