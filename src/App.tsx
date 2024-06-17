@@ -2,6 +2,7 @@ import {useEffect, useRef, useState } from 'react'
 import './App.css'
 import Pawn from './components/Pawn';
 import King from './components/King';
+import PieceProps from './components/pieceProps';
 
 function App() {
 
@@ -56,17 +57,6 @@ function App() {
     })
 
   })
-
-  interface PieceProps {
-    pawns: {x: number, y: number}[],
-    setPawns: (value: React.SetStateAction<{x: number, y: number, piece: 'Pawn' | 'King'}[]>) => any;
-    setBoard: (e: React.SetStateAction<{empty: boolean, playable: Boolean}[]>) => any;
-    pawnIndex: number,
-    xOffset: number | undefined;
-    yOffset: number | undefined;
-    containerSize: {width: number, height: number};
-    size: {width: number, height: number};
-}
 
   const piecesMap : {[Key in 'Pawn' | 'King']: React.ComponentType<PieceProps>} = {
     'Pawn': Pawn,
