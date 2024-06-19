@@ -12,16 +12,19 @@ function App() {
   }
 
   const [board, setBoard] = useState([...initialBoard]);
+  const [blackTurn, setBlackTurn] = useState<Boolean>(false);
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const [pawns, setPawns] = useState<{x: number, y: number, piece: 'Pawn' | 'King'}[]>([
-    {x: 0, y: 6, piece: 'Pawn'},
-    {x: 7, y: 6, piece: 'King'}
+  const [pawns, setPawns] = useState<{x: number, y: number, piece: 'Pawn' | 'King', isBlack: Boolean}[]>([
+    {x: 3, y: 6, piece: 'King', isBlack: true},
+    {x: 4, y: 6, piece: 'King', isBlack: true},
+    {x: 3, y: 1, piece: 'King', isBlack: false},
+    {x: 4, y: 1, piece: 'King', isBlack: false}
   ])
 
   const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight});
-  const [containerSize, setContainerSize] = useState({
+  const [containerSize] = useState({
     width: 400, height: 400
   })
 
@@ -74,21 +77,22 @@ function App() {
         {board.map((item, index) => {
           const row = Math.floor(index / 8);
           const column = index % 8;
-          let color = (column + row)  % 2 == 0 ? 'white' : 'yellowgreen';
+          let color = (column + row)  % 2 == 0 ? '#FCF55F' : '#722F37';
           color = item.playable ? 'limegreen' : color;
           const xOffset = containerSize.width ? (screenSize.width / 2) - (containerSize.width / 2) : undefined;
           const yOffset = containerSize.height ? (screenSize.height / 2) - (containerSize.height / 2) : undefined;
           return(
             <div key={index} onTouchStart={() => {
             }} style={{
-              backgroundColor: item.empty ? color : 'red'
+              backgroundColor: item.empty ? color : color
 
             }} className="box">
 
               {pawns.map((_pawn, _index) => {
                 const Component = piecesMap[_pawn.piece];
                 return (_pawn.x + _pawn.y * 8 == index ? <Component size={size} pawns={pawns} key={_index} xOffset={xOffset}
-                   yOffset={yOffset} setPawns={setPawns} setBoard={setBoard} pawnIndex={_index} containerSize={containerSize} /> : '')
+                   yOffset={yOffset} isBlack={_pawn.isBlack} setPawns={setPawns} setBoard={setBoard}
+                   pawnIndex={_index} containerSize={containerSize} blackTurn={blackTurn} setBlackTurn={setBlackTurn} /> : '')
               })}
             </div>
           )

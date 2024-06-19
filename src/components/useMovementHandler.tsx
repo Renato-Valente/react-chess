@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
 interface prospType {
-    setPawns: (e: React.SetStateAction<{x: number, y: number, piece: 'Pawn' | 'King'}[]>) => any;
+    setPawns: (e: React.SetStateAction<{x: number, y: number, piece: 'Pawn' | 'King', isBlack: Boolean}[]>) => any;
     setBoard: (e: React.SetStateAction<{empty: boolean, playable: Boolean}[]>) => any;
     pawnIndex: number;
     xOffset: number | undefined;
@@ -13,18 +13,25 @@ interface prospType {
     pageX: React.MutableRefObject<number>;
     pageY: React.MutableRefObject<number>;
     plays: number[];
+    isBlack: Boolean;
+    blackTurn: Boolean;
+    setBlackTurn: (value: React.SetStateAction<Boolean>) => any;
 }
 
 const useMovementHandler = (props: prospType) => {
 
-    const {setPawns, setBoard, plays, pawnIndex, xOffset, yOffset, containerSize, size, column, row, pageX, pageY} = props;
+    const {setPawns, setBoard, isBlack, plays, pawnIndex, xOffset, yOffset, 
+        containerSize, size, column, row, pageX, pageY, blackTurn, setBlackTurn} = props;
     const boxSize = {width: containerSize.width / 8, height: containerSize.height / 8}
     const startPosition = useRef({column: 0, row: 0});
 
     const touchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
 
+        if(isBlack != blackTurn) return;
+
         setBoard((prev) => {
             let result = [...prev];
+            console.log(isBlack ? 'Black' : 'White');
             
             if(!prev[column.current + row.current * 8].playable) {
                 console.log('not possible!');
@@ -39,7 +46,6 @@ const useMovementHandler = (props: prospType) => {
 
             return result;
         })
-        console.log('touchend Teste')
         e.currentTarget.style.position = 'absolute';
         const container_x = column.current * boxSize.width + boxSize.width / 2;
         const container_y = row.current * boxSize.height + boxSize.height / 2;
@@ -50,12 +56,24 @@ const useMovementHandler = (props: prospType) => {
 
         setPawns((prev) => {
             let result = [...prev];
-            result[pawnIndex] = {x: column.current, y: row.current, piece: result[pawnIndex].piece};
+            result[pawnIndex] = {x: column.current, y: row.current,
+                piece: result[pawnIndex].piece, isBlack: result[pawnIndex].isBlack};
             return result;
         })
+          
+        setBlackTurn((prev) => {
+            const changed = !(column.current == startPosition.current.column && 
+                row.current == startPosition.current.row)
+            return changed ? !prev : prev;
+         });
+        
+
     }
 
     const touchStart = () => {
+        
+        if(isBlack != blackTurn) return;
+
         startPosition.current = {column: column.current, row: row.current}; 
         console.log(`touchStart: ${startPosition.current.row} ${startPosition.current.column}`);
         setBoard((prev) => {
@@ -70,7 +88,7 @@ const useMovementHandler = (props: prospType) => {
 
     const touchMove = (e: React.TouchEvent<HTMLDivElement>) => {
         
-        if(!xOffset || !yOffset) return;
+        if(!xOffset || !yOffset || (isBlack != blackTurn)) return;
 
         const newPageX = e.touches[0].pageX;
         const newPageY = e.touches[0].pageY;

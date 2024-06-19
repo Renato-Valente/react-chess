@@ -2,13 +2,14 @@
 import { useRef } from "react";
 import useMovementHandler from "./useMovementHandler";
 import PieceProps from "./pieceProps";
-import icon from '../assets/king.svg';
-
+import black_icon from '../assets/king.svg';
+import white_icon from '../assets/King-white.svg'
 
 const King = (props: PieceProps) => {
 
 
-    const {setPawns, setBoard, size, xOffset, yOffset, pawnIndex, containerSize, pawns} = props;
+    const {setPawns, setBoard, isBlack, blackTurn, setBlackTurn,
+         size, xOffset, yOffset, pawnIndex, containerSize, pawns} = props;
     
     const column = useRef(pawns[pawnIndex].x);
     const row = useRef(pawns[pawnIndex].y);
@@ -28,9 +29,11 @@ const King = (props: PieceProps) => {
     if(pos.y + 1 < 8 && pos.x + 1 < 8) plays.push((pos.x +1) + (pos.y+1)*8);
     if(pos.y + 1 < 8 && pos.x - 1 >=0) plays.push((pos.x -1) + (pos.y+1)*8);
 
+    const icon = isBlack ? black_icon : white_icon;
+
     const {touchEnd, touchMove, touchStart} = useMovementHandler({setPawns,pawnIndex,
-        xOffset, yOffset, plays:plays, setBoard,
-        containerSize, size, column, row, pageX, pageY});
+        xOffset, yOffset, plays:plays, setBoard, blackTurn, setBlackTurn,
+        containerSize, size, column, row, pageX, pageY, isBlack});
 
     return(
         <div style={{width: size.width, height: size.height}} 
