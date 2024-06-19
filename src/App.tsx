@@ -78,7 +78,7 @@ function App() {
           const row = Math.floor(index / 8);
           const column = index % 8;
           let color = (column + row)  % 2 == 0 ? '#FCF55F' : '#722F37';
-          color = item.playable ? 'limegreen' : color;
+          //color = item.playable ? 'limegreen' : color;
           const xOffset = containerSize.width ? (screenSize.width / 2) - (containerSize.width / 2) : undefined;
           const yOffset = containerSize.height ? (screenSize.height / 2) - (containerSize.height / 2) : undefined;
           return(
@@ -87,6 +87,11 @@ function App() {
               backgroundColor: item.empty ? color : color
 
             }} className="box">
+
+            <div style = {{
+              width: '100%', height:'100%',backgroundColor:'rgba(55,80,130,0.5)',
+              display: item.playable ? 'flex' : 'none'
+            }}></div>
 
               {pawns.map((_pawn, _index) => {
                 const Component = piecesMap[_pawn.piece];

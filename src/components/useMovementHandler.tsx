@@ -33,7 +33,8 @@ const useMovementHandler = (props: prospType) => {
             let result = [...prev];
             console.log(isBlack ? 'Black' : 'White');
             
-            if(!prev[column.current + row.current * 8].playable) {
+            const boardIndex = column.current + row.current * 8;
+            if(!prev[boardIndex].playable || !prev[boardIndex].empty) {
                 console.log('not possible!');
                 console.log(' ');
                 row.current = startPosition.current.row;
