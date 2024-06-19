@@ -71,7 +71,6 @@ const useMovementHandler = (props: prospType) => {
     }
 
     const touchStart = () => {
-        
         if(isBlack != blackTurn) return;
 
         startPosition.current = {column: column.current, row: row.current}; 
@@ -87,7 +86,6 @@ const useMovementHandler = (props: prospType) => {
     }
 
     const touchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-        
         if(!xOffset || !yOffset || (isBlack != blackTurn)) return;
 
         const newPageX = e.touches[0].pageX;

@@ -25,7 +25,7 @@ function App() {
 
   const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight});
   const [containerSize] = useState({
-    width: 400, height: 400
+    width: 300, height: 300
   })
 
   useEffect(() => {

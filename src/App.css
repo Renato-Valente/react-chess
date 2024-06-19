@@ -35,4 +35,5 @@ body {
   height: 20px;
   /* background-color: blue; */
   position: absolute;
+  touch-action: none;
 }
