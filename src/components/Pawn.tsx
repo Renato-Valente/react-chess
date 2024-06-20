@@ -15,7 +15,7 @@ const Pawn = (props: PieceProps) => {
     const pageY = useRef(0);
     
     const {touchEnd, touchMove, touchStart} = useMovementHandler({setPawns, pawnIndex,
-        xOffset, yOffset, plays: [22,13], setBoard, isBlack, blackTurn, setBlackTurn,
+        xOffset, yOffset, plays: [22,13], attacks:[0,3], setBoard, isBlack, blackTurn, setBlackTurn,
         containerSize, size, column, row, pageX, pageY });
 
     return(
