@@ -1,7 +1,9 @@
 
+import pieceTypes from "./pieceTypes"
+
 interface PieceProps {
-    pawns: {x: number, y: number, piece: 'Pawn' | 'King', isBlack:Boolean}[];
-    setPawns: (value: React.SetStateAction<{x: number, y: number, piece: 'Pawn' | 'King', isBlack:Boolean}[]>) => any;
+    pawns: {x: number, y: number, piece: pieceTypes, isBlack:Boolean}[];
+    setPawns: (value: React.SetStateAction<{x: number, y: number, piece: pieceTypes, isBlack:Boolean}[]>) => any;
     setBoard: (e: React.SetStateAction<{empty: boolean, playable: Boolean, attack: Boolean}[]>) => any;
     board: {empty: boolean, playable: Boolean, attack: Boolean}[];
     pawnIndex: number;

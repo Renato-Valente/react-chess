@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import useMovementHandler from "./useMovementHandler";
-import PieceProps from "./pieceProps";
+import useMovementHandler from "../useMovementHandler";
+import PieceProps from "../pieceProps";
 
 
 const Pawn = (props: PieceProps) => {

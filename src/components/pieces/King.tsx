@@ -1,9 +1,9 @@
 
 import { useRef } from "react";
-import useMovementHandler from "./useMovementHandler";
-import PieceProps from "./pieceProps";
-import black_icon from '../assets/king.svg';
-import white_icon from '../assets/King-white.svg'
+import useMovementHandler from "../useMovementHandler";
+import PieceProps from "../pieceProps";
+import black_icon from '../../assets/king.svg';
+import white_icon from '../../assets/King-white.svg'
 
 const King = (props: PieceProps) => {
 

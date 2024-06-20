@@ -1,8 +1,11 @@
 import {useEffect, useRef, useState } from 'react'
 import './App.css'
-import Pawn from './components/Pawn';
-import King from './components/King';
+import Pawn from './components/pieces/Pawn';
+import King from './components/pieces/King';
+import Knight from './components/pieces/Knight';
 import PieceProps from './components/pieceProps';
+
+import pieceTypes from './components/pieceTypes';
 
 function App() {
 
@@ -16,10 +19,10 @@ function App() {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const [pawns, setPawns] = useState<{x: number, y: number, piece: 'Pawn' | 'King', isBlack: Boolean}[]>([
-    {x: 3, y: 6, piece: 'King', isBlack: true},
+  const [pawns, setPawns] = useState<{x: number, y: number, piece: pieceTypes, isBlack: Boolean}[]>([
+    {x: 3, y: 6, piece: 'Knight', isBlack: true},
     {x: 4, y: 6, piece: 'King', isBlack: true},
-    {x: 3, y: 1, piece: 'King', isBlack: false},
+    {x: 3, y: 1, piece: 'Knight', isBlack: false},
     {x: 4, y: 1, piece: 'King', isBlack: false}
   ])
 
@@ -63,9 +66,10 @@ function App() {
 
   })
 
-  const piecesMap : {[Key in 'Pawn' | 'King']: React.ComponentType<PieceProps>} = {
+  const piecesMap : {[Key in pieceTypes]: React.ComponentType<PieceProps>} = {
     'Pawn': Pawn,
-    'King': King
+    'King': King,
+    'Knight': Knight
   }
 
   const size = window.innerWidth > 600 ? {width: 50, height: 50} : {width: 40, height: 40};
