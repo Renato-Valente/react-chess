@@ -1,9 +1,10 @@
 
 interface PieceProps {
-    pawns: {x: number, y: number}[],
+    pawns: {x: number, y: number, piece: 'Pawn' | 'King', isBlack:Boolean}[];
     setPawns: (value: React.SetStateAction<{x: number, y: number, piece: 'Pawn' | 'King', isBlack:Boolean}[]>) => any;
-    setBoard: (e: React.SetStateAction<{empty: boolean, playable: Boolean}[]>) => any;
-    pawnIndex: number,
+    setBoard: (e: React.SetStateAction<{empty: boolean, playable: Boolean, attack: Boolean}[]>) => any;
+    board: {empty: boolean, playable: Boolean, attack: Boolean}[];
+    pawnIndex: number;
     xOffset: number | undefined;
     yOffset: number | undefined;
     containerSize: {width: number, height: number};

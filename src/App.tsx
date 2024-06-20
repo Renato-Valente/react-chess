@@ -6,9 +6,9 @@ import PieceProps from './components/pieceProps';
 
 function App() {
 
-  const initialBoard: {empty: boolean, playable: Boolean}[] = [];
+  const initialBoard: {empty: boolean, playable: Boolean, attack: Boolean}[] = [];
   for(let i = 0; i < 64; i++){
-    initialBoard.push({empty: true, playable: false})
+    initialBoard.push({empty: true, playable: false, attack: false})
   }
 
   const [board, setBoard] = useState([...initialBoard]);
@@ -59,6 +59,8 @@ function App() {
       return hasChanged ? result : prev;
     })
 
+    console.log('pieces: ', pawns);
+
   })
 
   const piecesMap : {[Key in 'Pawn' | 'King']: React.ComponentType<PieceProps>} = {
@@ -87,16 +89,16 @@ function App() {
               backgroundColor: item.empty ? color : color
 
             }} className="box">
-
+              
             <div style = {{
-              width: '100%', height:'100%',backgroundColor:'rgba(55,80,130,0.5)',
+              width: '100%', height:'100%',backgroundColor: item.attack ? 'rgba(200,80,55,1)' : 'rgba(55,80,130,0.5)',
               display: item.playable ? 'flex' : 'none'
             }}></div>
 
               {pawns.map((_pawn, _index) => {
                 const Component = piecesMap[_pawn.piece];
                 return (_pawn.x + _pawn.y * 8 == index ? <Component size={size} pawns={pawns} key={_index} xOffset={xOffset}
-                   yOffset={yOffset} isBlack={_pawn.isBlack} setPawns={setPawns} setBoard={setBoard}
+                   yOffset={yOffset} isBlack={_pawn.isBlack} setPawns={setPawns} setBoard={setBoard} board={board}
                    pawnIndex={_index} containerSize={containerSize} blackTurn={blackTurn} setBlackTurn={setBlackTurn} /> : '')
               })}
             </div>
