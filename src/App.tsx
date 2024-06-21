@@ -23,14 +23,40 @@ function App() {
   const ref = useRef<HTMLDivElement>(null);
 
   const [pawns, setPawns] = useState<{x: number, y: number, piece: pieceTypes, isBlack: Boolean}[]>([
-    {x: 3, y: 6, piece: 'Knight', isBlack: true},
-    {x: 4, y: 6, piece: 'King', isBlack: true},
-    {x: 2, y: 6, piece: 'Queen', isBlack: true},
-    {x: 5, y: 6, piece: 'Bishop', isBlack: true},
-    {x: 3, y: 1, piece: 'Knight', isBlack: false},
-    {x: 4, y: 1, piece: 'King', isBlack: false},
-    {x: 2, y: 1, piece: 'Queen', isBlack: false},
-    {x: 5, y: 1, piece: 'Bishop', isBlack: false}
+    {x: 0, y: 0, piece: 'Rook', isBlack: true},
+    {x: 7, y: 0, piece: 'Rook', isBlack: true},
+    {x: 1, y: 0, piece: 'Knight', isBlack: true},
+    {x: 6, y: 0, piece: 'Knight', isBlack: true},
+    {x: 2, y: 0, piece: 'Bishop', isBlack: true},
+    {x: 5, y: 0, piece: 'Bishop', isBlack: true},
+    {x: 3, y: 0, piece: 'Queen', isBlack: true},
+    {x: 4, y: 0, piece: 'King', isBlack: true},
+    {x: 0, y: 1, piece: 'Pawn', isBlack: true},
+    {x: 1, y: 1, piece: 'Pawn', isBlack: true},
+    {x: 2, y: 1, piece: 'Pawn', isBlack: true},
+    {x: 3, y: 1, piece: 'Pawn', isBlack: true},
+    {x: 4, y: 1, piece: 'Pawn', isBlack: true},
+    {x: 5, y: 1, piece: 'Pawn', isBlack: true},
+    {x: 6, y: 1, piece: 'Pawn', isBlack: true},
+    {x: 7, y: 1, piece: 'Pawn', isBlack: true},
+
+    {x: 0, y: 7, piece: 'Rook', isBlack: false},
+    {x: 7, y: 7, piece: 'Rook', isBlack: false},
+    {x: 1, y: 7, piece: 'Knight', isBlack: false},
+    {x: 6, y: 7, piece: 'Knight', isBlack: false},
+    {x: 2, y: 7, piece: 'Bishop', isBlack: false},
+    {x: 5, y: 7, piece: 'Bishop', isBlack: false},
+    {x: 3, y: 7, piece: 'Queen', isBlack: false},
+    {x: 4, y: 7, piece: 'King', isBlack: false},
+    {x: 0, y: 6, piece: 'Pawn', isBlack: false},
+    {x: 1, y: 6, piece: 'Pawn', isBlack: false},
+    {x: 2, y: 6, piece: 'Pawn', isBlack: false},
+    {x: 3, y: 6, piece: 'Pawn', isBlack: false},
+    {x: 4, y: 6, piece: 'Pawn', isBlack: false},
+    {x: 5, y: 6, piece: 'Pawn', isBlack: false},
+    {x: 6, y: 6, piece: 'Pawn', isBlack: false},
+    {x: 7, y: 6, piece: 'Pawn', isBlack: false}
+    
   ])
 
   const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight});
@@ -82,7 +108,7 @@ function App() {
     'Queen': Queen
   }
 
-  const size = window.innerWidth > 600 ? {width: 50, height: 50} : {width: 40, height: 40};
+  const size = {width: containerSize.width / 8, height: containerSize.height / 8};
 
   return (
     <>
@@ -94,13 +120,12 @@ function App() {
           const row = Math.floor(index / 8);
           const column = index % 8;
           let color = (column + row)  % 2 == 0 ? '#FCF55F' : '#722F37';
-          //color = item.playable ? 'limegreen' : color;
           const xOffset = containerSize.width ? (screenSize.width / 2) - (containerSize.width / 2) : undefined;
           const yOffset = containerSize.height ? (screenSize.height / 2) - (containerSize.height / 2) : undefined;
           return(
             <div key={index} onTouchStart={() => {
             }} style={{
-              backgroundColor: item.empty ? color : color
+              backgroundColor: color
 
             }} className="box">
               

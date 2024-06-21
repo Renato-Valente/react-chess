@@ -36,7 +36,12 @@ body {
 .pawn {
   width: 20px;
   height: 20px;
+  user-select: none;
   /* background-color: blue; */
   position: absolute;
   touch-action: none;
+}
+
+.pawn img {
+  user-select: none;
 }

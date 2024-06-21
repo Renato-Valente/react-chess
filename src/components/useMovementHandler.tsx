@@ -28,8 +28,9 @@ const useMovementHandler = (props: prospType) => {
     const boxSize = {width: containerSize.width / 8, height: containerSize.height / 8}
     const startPosition = useRef({column: 0, row: 0});
 
-    const touchStart = () => {
+    const touchStart = (e: React.TouchEvent<HTMLDivElement>) => {
         if(isBlack != blackTurn) return;
+        e.currentTarget.style.zIndex = '999';
 
         startPosition.current = {column: column.current, row: row.current}; 
         console.log(`touchStart: ${startPosition.current.row} ${startPosition.current.column}`);
@@ -69,6 +70,7 @@ const useMovementHandler = (props: prospType) => {
     const touchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
 
         if(isBlack != blackTurn) return;
+        e.currentTarget.style.zIndex = '0';
         //to check if the piece to be deleted (in case of attack) 
         //has index bigger than the current piece
         let isLess = false;
