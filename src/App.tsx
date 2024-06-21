@@ -3,9 +3,12 @@ import './App.css'
 import Pawn from './components/pieces/Pawn';
 import King from './components/pieces/King';
 import Knight from './components/pieces/Knight';
-import PieceProps from './components/pieceProps';
+import Rook from './components/pieces/Rook';
+import Bishop from './components/pieces/Bishop';
 
+import PieceProps from './components/pieceProps';
 import pieceTypes from './components/pieceTypes';
+import Queen from './components/pieces/Queen';
 
 function App() {
 
@@ -22,8 +25,12 @@ function App() {
   const [pawns, setPawns] = useState<{x: number, y: number, piece: pieceTypes, isBlack: Boolean}[]>([
     {x: 3, y: 6, piece: 'Knight', isBlack: true},
     {x: 4, y: 6, piece: 'King', isBlack: true},
+    {x: 2, y: 6, piece: 'Queen', isBlack: true},
+    {x: 5, y: 6, piece: 'Bishop', isBlack: true},
     {x: 3, y: 1, piece: 'Knight', isBlack: false},
-    {x: 4, y: 1, piece: 'King', isBlack: false}
+    {x: 4, y: 1, piece: 'King', isBlack: false},
+    {x: 2, y: 1, piece: 'Queen', isBlack: false},
+    {x: 5, y: 1, piece: 'Bishop', isBlack: false}
   ])
 
   const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight});
@@ -69,7 +76,10 @@ function App() {
   const piecesMap : {[Key in pieceTypes]: React.ComponentType<PieceProps>} = {
     'Pawn': Pawn,
     'King': King,
-    'Knight': Knight
+    'Knight': Knight,
+    'Rook': Rook,
+    'Bishop': Bishop,
+    'Queen': Queen
   }
 
   const size = window.innerWidth > 600 ? {width: 50, height: 50} : {width: 40, height: 40};
@@ -95,7 +105,7 @@ function App() {
             }} className="box">
               
             <div style = {{
-              width: '100%', height:'100%',backgroundColor: item.attack ? 'rgba(200,80,55,1)' : 'rgba(55,80,130,0.5)',
+              width: '100%', height:'100%',backgroundColor: item.attack ? 'rgba(200,80,55,1)' : 'rgba(55,80,130,0.8)',
               display: item.playable ? 'flex' : 'none'
             }}></div>
 
