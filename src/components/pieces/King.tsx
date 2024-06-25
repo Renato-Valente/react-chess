@@ -1,6 +1,7 @@
 
 import { useRef } from "react";
 import useMovementHandler from "../useMovementHandler";
+import useMoves from "../useMoves";
 import PieceProps from "../pieceProps";
 import black_icon from '../../assets/king.svg';
 import white_icon from '../../assets/King-white.svg'
@@ -17,25 +18,8 @@ const King = (props: PieceProps) => {
     const pageY = useRef(0);
 
     //calculating possible plays
-    const pos = pawns[pawnIndex];
-    const plays: number[] = [];
-    const attacks: number[] = [];
-    if(pos.y - 1 >= 0) plays.push(pos.x + (pos.y - 1) * 8);
-    if(pos.y + 1 < 8) plays.push(pos.x + (pos.y + 1) * 8);
-    if(pos.x - 1>= 0) plays.push((pos.x - 1) + pos.y * 8);
-    if(pos.x + 1 < 8) plays.push((pos.x + 1) + pos.y * 8);
-
-    if(pos.y - 1 >= 0 && pos.x + 1 < 8) plays.push((pos.x+1) + (pos.y-1)*8);
-    if(pos.y - 1 >= 0 && pos.x - 1 >=0) plays.push((pos.x-1) + (pos.y-1)*8);
-    if(pos.y + 1 < 8 && pos.x + 1 < 8) plays.push((pos.x +1) + (pos.y+1)*8);
-    if(pos.y + 1 < 8 && pos.x - 1 >=0) plays.push((pos.x -1) + (pos.y+1)*8);
-
-    plays.forEach((item) => {
-        if(!board[item].empty) {
-            const target = pawns.find((pawn) => (pawn.x + pawn.y * 8) == item);
-            if(target && target.isBlack != isBlack) attacks.push(item);
-        }
-    })
+    const {getKingMoves} = useMoves();
+    const {plays, attacks} = getKingMoves({board, pawns, pawnIndex});
 
     const icon = isBlack ? black_icon : white_icon;
 
