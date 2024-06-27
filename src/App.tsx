@@ -94,9 +94,6 @@ function App() {
       //to avoid re-render
       return hasChanged ? result : prev;
     })
-
-    console.log('pieces: ', pawns);
-
   })
 
   const piecesMap : {[Key in pieceTypes]: React.ComponentType<PieceProps>} = {

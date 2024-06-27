@@ -169,7 +169,17 @@ const useMoves = () => {
     return {plays, attacks}
     }
 
-    return {getLShapeMoves, getKingMoves, getHorintalMoves, getDiagonalMoves, getPawnMoves}
+    const getQueenMoves = (args: functionType) => {
+        const {board, pawns, pawnIndex} = args;
+        const diagonals = getDiagonalMoves({board, pawns, pawnIndex});
+        const horizontals = getHorintalMoves({board, pawns, pawnIndex});
+        const plays = [...diagonals.plays, ...horizontals.plays];
+        const attacks = [...diagonals.attacks, ...horizontals.attacks];
+
+        return {plays, attacks};
+    }
+
+    return {getLShapeMoves, getKingMoves, getHorintalMoves, getDiagonalMoves, getPawnMoves, getQueenMoves}
 }
 
 
