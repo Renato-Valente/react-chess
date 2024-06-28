@@ -10,7 +10,7 @@ const Knight = (props: PieceProps) => {
 
 
     const {setPawns, setBoard, board, isBlack, blackTurn, setBlackTurn,
-         size, xOffset, yOffset, pawnIndex, containerSize, pawns} = props;
+         size, xOffset, yOffset, pawnIndex, containerSize, setMarked, pawns} = props;
     
     const column = useRef(pawns[pawnIndex].x);
     const row = useRef(pawns[pawnIndex].y);
@@ -26,7 +26,7 @@ const Knight = (props: PieceProps) => {
 
     const {touchEnd, touchMove, touchStart} = useMovementHandler({pawns,setPawns,pawnIndex,
         xOffset, yOffset, plays, attacks, setBoard, board, blackTurn, setBlackTurn,
-        containerSize, size, column, row, pageX, pageY, isBlack});
+        containerSize, size, column, row, pageX, pageY, isBlack,setMarked});
 
     return(
         <div style={{width: size.width, height: size.height}} 

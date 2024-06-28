@@ -21,12 +21,29 @@ interface prospType {
     attacks: number[];
     isBlack: Boolean;
     blackTurn: Boolean;
+    setMarked: (value: React.SetStateAction<number[]>) => any;
     setBlackTurn: (value: React.SetStateAction<Boolean>) => any;
+}
+
+interface functionType {
+    board: {empty: boolean, playable: Boolean, attack: Boolean}[];
+    pawns: {x: number, y: number, piece: pieceTypes, isBlack:Boolean}[];
+    pawnIndex: number;
+}
+const {getLShapeMoves, getKingMoves, getHorintalMoves,
+    getDiagonalMoves, getPawnMoves, getQueenMoves} = useMoves();
+const piecesMap : {[Key in pieceTypes]: (args: functionType) => {plays:number[], attacks:number[]}} = {
+    'Bishop': getDiagonalMoves,
+    'King': getKingMoves,
+    'Knight': getLShapeMoves,
+    'Pawn': getPawnMoves,
+    'Rook': getHorintalMoves,
+    'Queen': getQueenMoves
 }
 
 const useMovementHandler = (props: prospType) => {
 
-    const {pawns, setPawns, setBoard, isBlack, plays, pawnIndex, xOffset, yOffset, attacks,
+    const {pawns, setMarked, setPawns, setBoard, isBlack, plays, pawnIndex, xOffset, yOffset, attacks,
         containerSize, board, column, row, pageX, pageY, blackTurn, setBlackTurn} = props;
     const boxSize = {width: containerSize.width / 8, height: containerSize.height / 8}
     const startPosition = useRef({column: 0, row: 0});
@@ -37,9 +54,8 @@ const useMovementHandler = (props: prospType) => {
         e.currentTarget.style.position = 'absolute';
         e.currentTarget.style.left = `${e.touches[0].pageX}px`;
         e.currentTarget.style.top = `${e.touches[0].pageY}px`;
-
+        
         startPosition.current = {column: column.current, row: row.current}; 
-        //console.log(`touchStart: ${startPosition.current.row} ${startPosition.current.column}`);
         setBoard((prev) => {
             let result = [...prev];
             plays.forEach((item) => {
@@ -50,6 +66,7 @@ const useMovementHandler = (props: prospType) => {
             })
             return result;
         })
+        setMarked([]);
     }
 
     const touchMove = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -72,21 +89,7 @@ const useMovementHandler = (props: prospType) => {
         e.currentTarget.style.left = `${pageX.current}px`;
         e.currentTarget.style.top = `${pageY.current}px`;
     }
-    interface functionType {
-        board: {empty: boolean, playable: Boolean, attack: Boolean}[];
-        pawns: {x: number, y: number, piece: pieceTypes, isBlack:Boolean}[];
-        pawnIndex: number;
-    }
-    const {getLShapeMoves, getKingMoves, getHorintalMoves,
-        getDiagonalMoves, getPawnMoves, getQueenMoves} = useMoves();
-    const piecesMap : {[Key in pieceTypes]: (args: functionType) => {plays:number[], attacks:number[]}} = {
-        'Bishop': getDiagonalMoves,
-        'King': getKingMoves,
-        'Knight': getLShapeMoves,
-        'Pawn': getPawnMoves,
-        'Rook': getHorintalMoves,
-        'Queen': getQueenMoves
-    }
+
     const touchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
         console.log('touchend')
 
@@ -107,6 +110,8 @@ const useMovementHandler = (props: prospType) => {
             piece: pieceTypes;
             isBlack: Boolean;
         }[] = [...pawns];
+
+        const newMarked: number[] = [];
 
         const boardIndex = column.current + row.current * 8;
         if(!board[boardIndex].playable) {
@@ -151,31 +156,36 @@ const useMovementHandler = (props: prospType) => {
             })
 
             //get all enemy attack moves based on newBoard
-            let allAttacks : number[] = [];
+            //and see if they match with the kings position
+            let check = false;
+            const king = result.find((item) => (item.piece == 'King' && item.isBlack == isBlack));
+            if (!king) return prev;
+            const kingIndex = king.x + (king.y) * 8;
+            
             result.forEach((item, index) => {
                 if(item.isBlack == isBlack) return;
                 const moves = piecesMap[item.piece]({board: newBoard, pawns: result, pawnIndex: index});
-                //console.log(`piece: ${item.piece}, plays: ${result.plays}`);
-                allAttacks = [...allAttacks, ...moves.attacks];
+                moves.attacks.forEach((atk) => {if(atk == kingIndex) {
+                    check = true;
+                    const pieceIndex = item.x + (item.y*8);
+                    newMarked.push(pieceIndex);
+                }})
+                
             })
-
-            //get King index
-            const king = result.find((item) => (item.piece == 'King' && item.isBlack == isBlack));
-            if(king) {
-                const kingIndex = king.x + (king.y) * 8;
-                 const check = Boolean(allAttacks.find((item) => item == kingIndex));
-                 if(check) {
-                    row.current = startPosition.current.row;
-                    column.current = startPosition.current.column;
+            if(check) {
+                row.current = startPosition.current.row;
+                column.current = startPosition.current.column;
+                if(pawns[pawnIndex].piece != 'King') newMarked.push(kingIndex);
                     console.log('retornando prev');
                     return prev;
-                 }
             }
+
             console.log('retornando result')
             return result;
         })
         
         setBoard(newBoard);
+        setMarked(newMarked);
         setBlackTurn((prev) => {
             //console.log('pawns: ', pawns);
             const changed = !(column.current == startPosition.current.column && 

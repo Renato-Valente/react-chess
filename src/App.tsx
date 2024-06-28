@@ -19,6 +19,7 @@ function App() {
 
   const [board, setBoard] = useState([...initialBoard]);
   const [blackTurn, setBlackTurn] = useState<Boolean>(false);
+  const [marked, setMarked] = useState<number[]>([]);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -119,21 +120,22 @@ function App() {
           let color = (column + row)  % 2 == 0 ? '#FCF55F' : '#722F37';
           const xOffset = containerSize.width ? (screenSize.width / 2) - (containerSize.width / 2) : undefined;
           const yOffset = containerSize.height ? (screenSize.height / 2) - (containerSize.height / 2) : undefined;
+          const isMarked = marked.find((value) => value == index);
+          color = isMarked ? 'red' : color;
           return(
-            <div key={index} onTouchStart={() => {
-            }} style={{
+            <div key={index} style={{
               backgroundColor: color
 
             }} className="box">
-              
             <div style = {{
               width: '100%', height:'100%',backgroundColor: item.attack ? 'rgba(200,80,55,1)' : 'rgba(55,80,130,0.8)',
               display: item.playable ? 'flex' : 'none'
-            }}></div>
+            }}>
+            </div>
 
               {pawns.map((_pawn, _index) => {
                 const Component = piecesMap[_pawn.piece];
-                return (_pawn.x + _pawn.y * 8 == index ? <Component size={size} pawns={pawns} key={_index} xOffset={xOffset}
+                return (_pawn.x + _pawn.y * 8 == index ? <Component setMarked={setMarked} size={size} pawns={pawns} key={_index} xOffset={xOffset}
                    yOffset={yOffset} isBlack={_pawn.isBlack} setPawns={setPawns} setBoard={setBoard} board={board}
                    pawnIndex={_index} containerSize={containerSize} blackTurn={blackTurn} setBlackTurn={setBlackTurn} /> : '')
               })}

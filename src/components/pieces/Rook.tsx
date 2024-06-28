@@ -10,7 +10,7 @@ const Rook = (props: PieceProps) => {
 
 
     const {setPawns, setBoard, board, isBlack, blackTurn, setBlackTurn,
-         size, xOffset, yOffset, pawnIndex, containerSize, pawns} = props;
+         size, xOffset, yOffset, pawnIndex, containerSize, setMarked, pawns} = props;
     
     const column = useRef(pawns[pawnIndex].x);
     const row = useRef(pawns[pawnIndex].y);
@@ -24,7 +24,7 @@ const Rook = (props: PieceProps) => {
     const icon = isBlack ? black_icon : white_icon;
 
     const {touchEnd, touchMove, touchStart} = useMovementHandler({pawns,setPawns,pawnIndex,
-        xOffset, yOffset, plays, attacks, setBoard, board, blackTurn, setBlackTurn,
+        xOffset, yOffset, plays, attacks, setBoard, board, blackTurn, setMarked, setBlackTurn,
         containerSize, size, column, row, pageX, pageY, isBlack});
 
     return(

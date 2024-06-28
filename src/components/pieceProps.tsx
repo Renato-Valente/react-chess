@@ -13,6 +13,7 @@ interface PieceProps {
     size: {width: number, height: number};
     isBlack: Boolean;
     blackTurn: Boolean;
+    setMarked: (value: React.SetStateAction<number[]>) => any;
     setBlackTurn: (value: React.SetStateAction<Boolean>) => any;
 }
 
