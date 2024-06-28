@@ -25,7 +25,7 @@ const Knight = (props: PieceProps) => {
     const icon = isBlack ? black_icon : white_icon;
 
     const {touchEnd, touchMove, touchStart} = useMovementHandler({pawns,setPawns,pawnIndex,
-        xOffset, yOffset, plays, attacks, setBoard, blackTurn, setBlackTurn,
+        xOffset, yOffset, plays, attacks, setBoard, board, blackTurn, setBlackTurn,
         containerSize, size, column, row, pageX, pageY, isBlack});
 
     return(
