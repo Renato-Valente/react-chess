@@ -47,13 +47,20 @@ const useMovementHandler = (props: prospType) => {
         containerSize, board, column, row, pageX, pageY, blackTurn, setBlackTurn} = props;
     const boxSize = {width: containerSize.width / 8, height: containerSize.height / 8}
     const startPosition = useRef({column: 0, row: 0});
+    const isMoving = useRef(false);
 
-    const touchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touchStart = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
         if(isBlack != blackTurn) return;
+        console.log('touchstart')
+        isMoving.current = true;
+        const X = ('touches' in e) ? e.touches[0].pageX : e.pageX;
+        const Y = ('touches' in e) ? e.touches[0].pageY : e.pageY;
+        const newPageX = X - boxSize.width/2;
+        const newPageY = Y - boxSize.height/2;
         e.currentTarget.style.zIndex = '999';
         e.currentTarget.style.position = 'absolute';
-        e.currentTarget.style.left = `${e.touches[0].pageX}px`;
-        e.currentTarget.style.top = `${e.touches[0].pageY}px`;
+        e.currentTarget.style.left = `${newPageX}px`;
+        e.currentTarget.style.top = `${newPageY}px`;
         
         startPosition.current = {column: column.current, row: row.current}; 
         setBoard((prev) => {
@@ -69,11 +76,13 @@ const useMovementHandler = (props: prospType) => {
         setMarked([]);
     }
 
-    const touchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-        if(!xOffset || !yOffset || (isBlack != blackTurn)) return;
-
-        const newPageX = e.touches[0].pageX;
-        const newPageY = e.touches[0].pageY;
+    const touchMove = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+        if(!xOffset || !yOffset || (isBlack != blackTurn) || !isMoving.current) return;
+        console.log('isMoving: ', isMoving.current);
+        const newPageX = ('touches' in e) ? e.touches[0].pageX : e.pageX;
+        const newPageY = ('touches' in e) ? e.touches[0].pageY : e.pageY;
+        /* const newPageX = X - boxSize.width/2;
+        const newPageY = Y - boxSize.height/2; */
 
         pageX.current = ((newPageX - xOffset) > 0 && (newPageX) < (containerSize.width + xOffset)) ? 
         newPageX : pageX.current;
@@ -86,12 +95,14 @@ const useMovementHandler = (props: prospType) => {
         column.current = (Math.floor(containerX / boxSize.width));
         row.current = (Math.floor(containerY / boxSize.height));
         
-        e.currentTarget.style.left = `${pageX.current}px`;
-        e.currentTarget.style.top = `${pageY.current}px`;
+        e.currentTarget.style.left = `${pageX.current - boxSize.width/2}px`;
+        e.currentTarget.style.top = `${pageY.current - boxSize.height/2}px`;
     }
 
-    const touchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-        console.log('touchend')
+    const touchEnd = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+        console.log('touchend');
+        if(!isMoving.current) return;
+        isMoving.current = false;
 
         if(isBlack != blackTurn) return;
         e.currentTarget.style.zIndex = '0';

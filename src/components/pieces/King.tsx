@@ -29,8 +29,9 @@ const King = (props: PieceProps) => {
 
     return(
         <div style={{width: size.width, height: size.height}} 
+         onPointerDown={touchStart} onMouseMove={touchMove} onMouseUp={touchEnd}
          onTouchMove={touchMove} onTouchEnd={touchEnd} onTouchStart={touchStart} className="pawn">
-            <img src={icon} width={size.width} height={size.height} />
+            <img draggable={false} src={icon} width={size.width} height={size.height} />
          </div>
     )
 
