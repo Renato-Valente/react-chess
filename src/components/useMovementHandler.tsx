@@ -78,7 +78,6 @@ const useMovementHandler = (props: prospType) => {
 
     const touchMove = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
         if(!xOffset || !yOffset || (isBlack != blackTurn) || !isMoving.current) return;
-        console.log('isMoving: ', isMoving.current);
         const newPageX = ('touches' in e) ? e.touches[0].pageX : e.pageX;
         const newPageY = ('touches' in e) ? e.touches[0].pageY : e.pageY;
         /* const newPageX = X - boxSize.width/2;
@@ -100,7 +99,6 @@ const useMovementHandler = (props: prospType) => {
     }
 
     const touchEnd = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
-        console.log('touchend');
         if(!isMoving.current) return;
         isMoving.current = false;
 

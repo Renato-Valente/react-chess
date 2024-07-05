@@ -45,3 +45,23 @@ body {
 .pawn img {
   user-select: none;
 }
+
+.restart {
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 30px;
+  background-color: orange;
+  border:none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.restart img {
+  width: 80%;
+  height: 80%;
+}

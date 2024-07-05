@@ -5,10 +5,12 @@ import King from './components/pieces/King';
 import Knight from './components/pieces/Knight';
 import Rook from './components/pieces/Rook';
 import Bishop from './components/pieces/Bishop';
+import Queen from './components/pieces/Queen';
 
 import PieceProps from './components/pieceProps';
 import pieceTypes from './components/pieceTypes';
-import Queen from './components/pieces/Queen';
+
+import reload from './assets/reload-icon.svg';
 
 function App() {
 
@@ -23,7 +25,7 @@ function App() {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const [pawns, setPawns] = useState<{x: number, y: number, piece: pieceTypes, isBlack: Boolean}[]>([
+  const initialPawns: {x: number, y: number, piece: pieceTypes, isBlack: Boolean}[] = [
     {x: 0, y: 0, piece: 'Rook', isBlack: true},
     {x: 7, y: 0, piece: 'Rook', isBlack: true},
     {x: 1, y: 0, piece: 'Knight', isBlack: true},
@@ -58,7 +60,9 @@ function App() {
     {x: 6, y: 6, piece: 'Pawn', isBlack: false},
     {x: 7, y: 6, piece: 'Pawn', isBlack: false}
     
-  ])
+  ];
+
+  const [pawns, setPawns] = useState<{x: number, y: number, piece: pieceTypes, isBlack: Boolean}[]>([])
 
   const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight});
   const [containerSize] = useState({
@@ -67,6 +71,7 @@ function App() {
 
   useEffect(() => {
 
+    setPawns(initialPawns);
     setScreenSize({width: window.innerWidth, height: window.innerHeight});
 
     window.addEventListener('resize', () => {
@@ -110,6 +115,13 @@ function App() {
 
   return (
     <>
+      <button onClick={() => {
+        setPawns(initialPawns);
+        setBlackTurn(false);
+        setMarked([]);
+      }} className='restart'>
+        <img src={reload} alt="reload button" />
+      </button>
       <div style={{
         width: containerSize.width,
         height: containerSize.height
