@@ -72,13 +72,19 @@ function App() {
   useEffect(() => {
 
     setPawns(initialPawns);
-    setScreenSize({width: window.innerWidth, height: window.innerHeight});
+    setScreenSize({width: window.innerWidth < window.outerWidth ? window.innerWidth : window.outerWidth,
+      height: window.innerHeight < window.outerHeight ? window.innerHeight : window.outerHeight});
 
     window.addEventListener('resize', () => {
       console.log('resize');
-      setScreenSize({width: window.innerWidth, height: window.innerHeight})
+      setScreenSize({width: window.innerWidth < window.outerWidth ? window.innerWidth : window.outerWidth,
+        height: window.innerHeight < window.outerHeight ? window.innerHeight : window.outerHeight});
     })
   }, [])
+
+  /* useEffect(() => {
+    console.log('pawns changed');
+  },[pawns]) */
 
   useEffect(() => {
 
@@ -112,11 +118,16 @@ function App() {
   }
 
   const size = {width: containerSize.width / 8, height: containerSize.height / 8};
+  const xOffset = containerSize.width ? (screenSize.width / 2) - (containerSize.width / 2) : undefined;
+  const yOffset = containerSize.height ? (screenSize.height / 2) - (containerSize.height / 2) : undefined;
 
   return (
     <>
       <button onClick={() => {
-        setPawns(initialPawns);
+        setPawns(() => {
+          const result = initialPawns.map((item) => {return {...item}});
+          return result;
+        });
         setBlackTurn(false);
         setMarked([]);
       }} className='restart'>
@@ -130,8 +141,7 @@ function App() {
           const row = Math.floor(index / 8);
           const column = index % 8;
           let color = (column + row)  % 2 == 0 ? '#FCF55F' : '#722F37';
-          const xOffset = containerSize.width ? (screenSize.width / 2) - (containerSize.width / 2) : undefined;
-          const yOffset = containerSize.height ? (screenSize.height / 2) - (containerSize.height / 2) : undefined;
+          
           const isMarked = marked.find((value) => value == index);
           color = isMarked ? 'red' : color;
           return(
@@ -145,16 +155,24 @@ function App() {
             }}>
             </div>
 
-              {pawns.map((_pawn, _index) => {
+              {/* {pawns.map((_pawn, _index) => {
                 const Component = piecesMap[_pawn.piece];
                 return (_pawn.x + _pawn.y * 8 == index ? <Component setMarked={setMarked} size={size} pawns={pawns} key={_index} xOffset={xOffset}
                    yOffset={yOffset} isBlack={_pawn.isBlack} setPawns={setPawns} setBoard={setBoard} board={board}
                    pawnIndex={_index} containerSize={containerSize} blackTurn={blackTurn} setBlackTurn={setBlackTurn} /> : '')
-              })}
+              })} */}
             </div>
           )
         })}
       </div>
+      {pawns.map((pawn, index) => {
+        const Component = piecesMap[pawn.piece];
+        return(
+          <Component setMarked={setMarked} size={size} pawns={pawns} key={index} xOffset={xOffset}
+                   yOffset={yOffset} isBlack={pawn.isBlack} setPawns={setPawns} setBoard={setBoard} board={board}
+                   pawnIndex={index} containerSize={containerSize} blackTurn={blackTurn} setBlackTurn={setBlackTurn} />
+        )
+      })}
     </>
   )
 }

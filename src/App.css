@@ -39,6 +39,7 @@ body {
   user-select: none;
   /* background-color: blue; */
   position: absolute;
+  transition-duration: 0.5s;
   touch-action: none;
 }
 

@@ -59,6 +59,7 @@ const useMovementHandler = (props: prospType) => {
         const newPageY = Y - boxSize.height/2;
         e.currentTarget.style.zIndex = '999';
         e.currentTarget.style.position = 'absolute';
+        e.currentTarget.style.transitionDuration = '0s';
         e.currentTarget.style.left = `${newPageX}px`;
         e.currentTarget.style.top = `${newPageY}px`;
         
@@ -145,7 +146,8 @@ const useMovementHandler = (props: prospType) => {
             }
         }
 
-        e.currentTarget.style.position = 'static';
+        //e.currentTarget.style.position = 'static';
+        e.currentTarget.style.transitionDuration = '0.5s';
         e.currentTarget.style.zIndex = '0';
 
         for(let i = 0; i < 64; i++) {
@@ -192,6 +194,9 @@ const useMovementHandler = (props: prospType) => {
             console.log('retornando result')
             return result;
         })
+        if(!xOffset || !yOffset) return;
+        e.currentTarget.style.left = `${column.current * boxSize.width + xOffset}px`;
+        e.currentTarget.style.top = `${row.current * boxSize.height + yOffset}px`;
         
         setBoard(newBoard);
         setMarked(newMarked);
