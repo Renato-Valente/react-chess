@@ -3,9 +3,9 @@ import pieceTypes from "./pieceTypes";
 import useMoves from "./useMoves";
 
 interface prospType {
-    pawns: {x: number, y: number, piece: pieceTypes, isBlack: Boolean}[]
+    pawns: {x: number, y: number, piece: pieceTypes, isBlack: Boolean, captured: Boolean}[]
     setPawns: (e: React.SetStateAction<{x: number, y: number, piece: pieceTypes,
-    isBlack: Boolean}[]>) => any;
+    isBlack: Boolean, captured: Boolean}[]>) => any;
     board: {empty: boolean, playable: Boolean, attack: Boolean}[];
     setBoard: (e: React.SetStateAction<{empty: boolean, playable: Boolean, attack: Boolean}[]>) => any;
     pawnIndex: number;
@@ -114,12 +114,7 @@ const useMovementHandler = (props: prospType) => {
             attack: Boolean;
         }[] = [];
 
-        let newPawns : {
-            x: number;
-            y: number;
-            piece: pieceTypes;
-            isBlack: Boolean;
-        }[] = [...pawns];
+        let newPawns = [...pawns];
 
         const newMarked: number[] = [];
 
@@ -135,7 +130,8 @@ const useMovementHandler = (props: prospType) => {
                 if(board[boardIndex].attack) {
                     console.log('capture');
                     const index = newPawns.findIndex((item) => (item.x + item.y*8) == boardIndex);
-                    newPawns.splice(index, 1);
+                    //newPawns.splice(index, 1);
+                    newPawns[index] = {...newPawns[index], captured: true, x:-1, y:-1};
                     isLess = index < pawnIndex;
                 } else{
                     console.log('friendly fire!');
@@ -156,12 +152,13 @@ const useMovementHandler = (props: prospType) => {
 
         setPawns((prev) => {
             let result = [...newPawns];
-            const index = isLess ? pawnIndex - 1 : pawnIndex;
-            result[index] = {x: column.current, y: row.current,
+            const index = isLess ? pawnIndex : pawnIndex;
+            result[index] = {x: column.current, y: row.current,captured:result[index].captured,
             piece: result[index].piece, isBlack: result[index].isBlack};
 
             //CHECKING FOR CHECKS
             result.forEach((item) => {
+                if(item.captured) return;
                 const _index = item.x + (item.y*8);
                 newBoard[_index].empty = false;
             })

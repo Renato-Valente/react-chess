@@ -23,7 +23,7 @@ const useMoves = () => {
     if(pos.x +2 <8 && pos.y +1 < 8) plays.push((pos.x+2) + (pos.y+1)*8);
 
     plays.forEach((item) => {
-        if(!board[item].empty) {
+        if(board[item] && !board[item].empty) {
             const target = pawns.find((pawn) => (pawn.x + pawn.y * 8) == item);
             if(target && target.isBlack != pos.isBlack) attacks.push(item);
         }
@@ -48,7 +48,7 @@ const useMoves = () => {
         if(pos.y + 1 < 8 && pos.x - 1 >=0) plays.push((pos.x -1) + (pos.y+1)*8);
     
         plays.forEach((item) => {
-            if(!board[item].empty) {
+            if(board[item] && !board[item].empty) {
                 const target = pawns.find((pawn) => (pawn.x + pawn.y * 8) == item);
                 if(target && target.isBlack != pos.isBlack) attacks.push(item);
             }
@@ -88,7 +88,7 @@ const useMoves = () => {
     }
 
     plays.forEach((item) => {
-        if(!board[item].empty) {
+        if(board[item] && !board[item].empty) {
             const target = pawns.find((pawn) => (pawn.x + pawn.y * 8) == item);
             if(target && target.isBlack != pos.isBlack) attacks.push(item);
         }
@@ -127,7 +127,7 @@ const useMoves = () => {
         }
 
         plays.forEach((item) => {
-            if(!board[item].empty) {
+            if(board[item] && !board[item].empty) {
                 const target = pawns.find((pawn) => (pawn.x + pawn.y * 8) == item);
                 if(target && target.isBlack != pos.isBlack) attacks.push(item);
             }
@@ -161,7 +161,7 @@ const useMoves = () => {
     })
     
     plays.forEach((item) => {
-        if(!board[item].empty) {
+        if(board[item] && !board[item].empty) {
             const target = pawns.find((pawn) => (pawn.x + pawn.y * 8) == item);
             if(target && target.isBlack != pos.isBlack) attacks.push(item);
         }

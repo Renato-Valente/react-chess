@@ -44,7 +44,7 @@ const Pawn = (props: PieceProps) => {
                 top: `${row.current * size.height + yOffset}px`,
                 width: size.width, height: size.height,
             }}
-            onPointerDown={touchStart} onMouseMove={touchMove} onMouseUp={touchEnd}
+            onPointerDown={touchStart} onMouseMove={touchMove} onMouseUp={touchEnd} onPointerLeave={touchEnd}
              onTouchMove={touchMove} onTouchEnd={touchEnd} onTouchStart={touchStart} className="pawn">
                 <img draggable={false} src={icon} width={size.width} height={size.height} />
              </div>

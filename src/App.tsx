@@ -25,44 +25,44 @@ function App() {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const initialPawns: {x: number, y: number, piece: pieceTypes, isBlack: Boolean}[] = [
-    {x: 0, y: 0, piece: 'Rook', isBlack: true},
-    {x: 7, y: 0, piece: 'Rook', isBlack: true},
-    {x: 1, y: 0, piece: 'Knight', isBlack: true},
-    {x: 6, y: 0, piece: 'Knight', isBlack: true},
-    {x: 2, y: 0, piece: 'Bishop', isBlack: true},
-    {x: 5, y: 0, piece: 'Bishop', isBlack: true},
-    {x: 3, y: 0, piece: 'Queen', isBlack: true},
-    {x: 4, y: 0, piece: 'King', isBlack: true},
-    {x: 0, y: 1, piece: 'Pawn', isBlack: true},
-    {x: 1, y: 1, piece: 'Pawn', isBlack: true},
-    {x: 2, y: 1, piece: 'Pawn', isBlack: true},
-    {x: 3, y: 1, piece: 'Pawn', isBlack: true},
-    {x: 4, y: 1, piece: 'Pawn', isBlack: true},
-    {x: 5, y: 1, piece: 'Pawn', isBlack: true},
-    {x: 6, y: 1, piece: 'Pawn', isBlack: true},
-    {x: 7, y: 1, piece: 'Pawn', isBlack: true},
+  const initialPawns: {x: number, y: number, piece: pieceTypes, isBlack: Boolean, captured: Boolean}[] = [
+    {x: 0, y: 0, piece: 'Rook', isBlack: true, captured: false},
+    {x: 7, y: 0, piece: 'Rook', isBlack: true, captured: false},
+    {x: 1, y: 0, piece: 'Knight', isBlack: true, captured: false},
+    {x: 6, y: 0, piece: 'Knight', isBlack: true, captured: false},
+    {x: 2, y: 0, piece: 'Bishop', isBlack: true, captured: false},
+    {x: 5, y: 0, piece: 'Bishop', isBlack: true, captured: false},
+    {x: 3, y: 0, piece: 'Queen', isBlack: true, captured: false},
+    {x: 4, y: 0, piece: 'King', isBlack: true, captured: false},
+    {x: 0, y: 1, piece: 'Pawn', isBlack: true, captured: false},
+    {x: 1, y: 1, piece: 'Pawn', isBlack: true, captured: false},
+    {x: 2, y: 1, piece: 'Pawn', isBlack: true, captured: false},
+    {x: 3, y: 1, piece: 'Pawn', isBlack: true, captured: false},
+    {x: 4, y: 1, piece: 'Pawn', isBlack: true, captured: false},
+    {x: 5, y: 1, piece: 'Pawn', isBlack: true, captured: false},
+    {x: 6, y: 1, piece: 'Pawn', isBlack: true, captured: false},
+    {x: 7, y: 1, piece: 'Pawn', isBlack: true, captured: false},
 
-    {x: 0, y: 7, piece: 'Rook', isBlack: false},
-    {x: 7, y: 7, piece: 'Rook', isBlack: false},
-    {x: 1, y: 7, piece: 'Knight', isBlack: false},
-    {x: 6, y: 7, piece: 'Knight', isBlack: false},
-    {x: 2, y: 7, piece: 'Bishop', isBlack: false},
-    {x: 5, y: 7, piece: 'Bishop', isBlack: false},
-    {x: 3, y: 7, piece: 'Queen', isBlack: false},
-    {x: 4, y: 7, piece: 'King', isBlack: false},
-    {x: 0, y: 6, piece: 'Pawn', isBlack: false},
-    {x: 1, y: 6, piece: 'Pawn', isBlack: false},
-    {x: 2, y: 6, piece: 'Pawn', isBlack: false},
-    {x: 3, y: 6, piece: 'Pawn', isBlack: false},
-    {x: 4, y: 6, piece: 'Pawn', isBlack: false},
-    {x: 5, y: 6, piece: 'Pawn', isBlack: false},
-    {x: 6, y: 6, piece: 'Pawn', isBlack: false},
-    {x: 7, y: 6, piece: 'Pawn', isBlack: false}
+    {x: 0, y: 7, piece: 'Rook', isBlack: false, captured: false},
+    {x: 7, y: 7, piece: 'Rook', isBlack: false, captured: false},
+    {x: 1, y: 7, piece: 'Knight', isBlack: false, captured: false},
+    {x: 6, y: 7, piece: 'Knight', isBlack: false, captured: false},
+    {x: 2, y: 7, piece: 'Bishop', isBlack: false, captured: false},
+    {x: 5, y: 7, piece: 'Bishop', isBlack: false, captured: false},
+    {x: 3, y: 7, piece: 'Queen', isBlack: false, captured: false},
+    {x: 4, y: 7, piece: 'King', isBlack: false, captured: false},
+    {x: 0, y: 6, piece: 'Pawn', isBlack: false, captured: false},
+    {x: 1, y: 6, piece: 'Pawn', isBlack: false, captured: false},
+    {x: 2, y: 6, piece: 'Pawn', isBlack: false, captured: false},
+    {x: 3, y: 6, piece: 'Pawn', isBlack: false, captured: false},
+    {x: 4, y: 6, piece: 'Pawn', isBlack: false, captured: false},
+    {x: 5, y: 6, piece: 'Pawn', isBlack: false, captured: false},
+    {x: 6, y: 6, piece: 'Pawn', isBlack: false, captured: false},
+    {x: 7, y: 6, piece: 'Pawn', isBlack: false, captured: false}
     
   ];
 
-  const [pawns, setPawns] = useState<{x: number, y: number, piece: pieceTypes, isBlack: Boolean}[]>([])
+  const [pawns, setPawns] = useState<{x: number, y: number, piece: pieceTypes, isBlack: Boolean, captured: Boolean}[]>([])
 
   const [screenSize, setScreenSize] = useState({width: window.innerWidth, height: window.innerHeight});
   const [containerSize] = useState({
@@ -93,6 +93,7 @@ function App() {
       let result = prev.map(value => ({...value, empty:true, playable: value.playable}))
 
       pawns.forEach((value) => {
+        if(value.captured) return;
         const boardIndex = value.x + value.y * 8;
         result[boardIndex].empty = false;
       });
@@ -166,6 +167,7 @@ function App() {
         })}
       </div>
       {pawns.map((pawn, index) => {
+        if(pawn.captured) return;
         const Component = piecesMap[pawn.piece];
         return(
           <Component setMarked={setMarked} size={size} pawns={pawns} key={index} xOffset={xOffset}
